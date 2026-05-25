@@ -28,6 +28,5 @@
   "build": {
     "includeDir": "include",
     "srcDir": "src/",
-    "srcFilter": "+<*> -<output_common/lut.S>"
   }
 }
