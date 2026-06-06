@@ -127,7 +127,6 @@ static void epd_board_init(uint32_t epd_row_width, const EpdInitConfig* init_con
         ESP_ERROR_CHECK(i2c_ret);
     }
 
-    );
     config_reg.pwrup = false;
     config_reg.vcom_ctrl = false;
     config_reg.wakeup = false;
