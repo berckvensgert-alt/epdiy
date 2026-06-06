@@ -11,7 +11,6 @@
 
 #include <driver/gpio.h>
 #include <sdkconfig.h>
-
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 
@@ -135,7 +134,10 @@ static void epd_board_init(uint32_t epd_row_width, const EpdInitConfig* init_con
     gpio_set_direction(CFG_INTR, GPIO_MODE_INPUT);
     gpio_set_intr_type(CFG_INTR, GPIO_INTR_NEGEDGE);
 
-    ESP_ERROR_CHECK(gpio_install_isr_service(ESP_INTR_FLAG_EDGE));
+    esp_err_t isr_ret = gpio_install_isr_service(ESP_INTR_FLAG_EDGE);
+    if (isr_ret != ESP_OK && isr_ret != ESP_ERR_INVALID_STATE) {
+        ESP_ERROR_CHECK(isr_ret);
+    }
 
     ESP_ERROR_CHECK(gpio_isr_handler_add(CFG_INTR, interrupt_handler, (void*)CFG_INTR));
 
