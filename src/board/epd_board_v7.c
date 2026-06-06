@@ -122,7 +122,11 @@ static lcd_bus_config_t lcd_config = {
 static void epd_board_init(uint32_t epd_row_width, const EpdInitConfig* init_config) {
     gpio_hold_dis(CKH);  // free CKH after wakeup
 
-    ESP_ERROR_CHECK(epd_board_i2c_init(&config_reg.i2c, &board_i2c_config, init_config, true, true)
+    esp_err_t i2c_ret = epd_board_i2c_init(&config_reg.i2c, &board_i2c_config, init_config, true, true);
+    if (i2c_ret != ESP_OK && i2c_ret != ESP_ERR_INVALID_STATE) {
+        ESP_ERROR_CHECK(i2c_ret);
+    }
+
     );
     config_reg.pwrup = false;
     config_reg.vcom_ctrl = false;
